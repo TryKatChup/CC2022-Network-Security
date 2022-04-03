@@ -13,8 +13,8 @@ Materiale didattico su basi di Network Security (CyberChallenge 2022 - Alma Mate
 
 - [Network_Security__Basi_e_cenni_teorici](https://github.com/TryKatChup/CC2022-Network-Security/blob/main/Network_Security__Basi_e_cenni_teorici.pdf): lezione di teoria su basi di Computer Networks e Network Security (8/3/2022)
 
-- [Network_Security__Basi_e_cenni_teorici](https://github.com/TryKatChup/CC2022-Network-Security/blob/main/Laboratorio.pdf): lezione di laboratorio su IDS, IPS e Suricata in dettaglio (8/3/2022).
+- [Network_Security__Laboratorio](https://github.com/TryKatChup/CC2022-Network-Security/blob/main/Network_Security__Laboratorio.pdf): lezione di laboratorio su IDS, IPS e Suricata in dettaglio (11/3/2022).
 
-- [Lab-challenge](https://github.com/TryKatChup/CC2022-Network-Security/tree/main/Lab-challenge): challenge su file `.pcap` proposte in laboratorio, con soluzioni.
+- [Lab-challenge](https://github.com/TryKatChup/CC2022-Network-Security/tree/main/Lab-challenge): challenge su file `.pcap` proposte in laboratorio, con soluzioni. Utilizo di Wireshark come tool di analisi del traffico.
 
 
