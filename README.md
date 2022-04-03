@@ -1,6 +1,7 @@
 <div align="center">
 
 # CC2022-Network-Security
+![img](https://custom-icon-badges.herokuapp.com/badge/cat-approved-red?logo=cat-approved&logoColor=fff)
 [![TryKatChup - CC2022-Network-Security](https://img.shields.io/static/v1?label=TryKatChup&message=CC2022-Network-Security&color=blue&logo=github)](https://github.com/TryKatChup/CC2022-Network-Security "Go to GitHub repo")
 [![stars - CC2022-Network-Security](https://img.shields.io/github/stars/TryKatChup/CC2022-Network-Security?style=social)](https://github.com/TryKatChup/CC2022-Network-Security)
 [![forks - CC2022-Network-Security](https://img.shields.io/github/forks/TryKatChup/CC2022-Network-Security?style=social)](https://github.com/TryKatChup/CC2022-Network-Security)
