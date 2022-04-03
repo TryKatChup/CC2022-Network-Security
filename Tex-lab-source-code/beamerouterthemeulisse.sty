@@ -1,0 +1,11 @@
+% Frame title
+\defbeamertemplate*{frametitle}{ulisse}[1][]
+{
+	\hspace*{-1.3cm}
+	\begin{tikzpicture}
+		\useasboundingbox[fill=ulissered](-1.2,-1) rectangle(\the\paperwidth,0);
+		\node[anchor=west, white, font=\large] (title) at (0,-.5) {\insertframetitle};
+		\node[below=0em of title, white]{\insertframesubtitle};
+		\node[white,font=\small] at (14,-.5) {\thepage / \pageref{LastPage}};
+	\end{tikzpicture}
+}

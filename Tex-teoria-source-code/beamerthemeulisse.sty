@@ -1,0 +1,21 @@
+\mode<presentation>
+
+\RequirePackage{tikz}
+\RequirePackage{calc}
+\RequirePackage{lastpage}
+
+\newcommand{\startlayoutpage} { %
+	\def\layoutpage{1} %
+	\addtocounter{page}{-1}
+}
+\newcommand{\stoplayoutpage} {%
+	\def\layoutpage{0} %
+}
+
+\usecolortheme{ulisse}
+\useinnertheme{ulisse}
+\useoutertheme{ulisse}
+
+\setbeamertemplate{navigation symbols}{}
+
+\mode<all>

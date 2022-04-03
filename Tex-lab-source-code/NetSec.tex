@@ -1,0 +1,330 @@
+\documentclass[aspectratio=169]{beamer}
+
+\usepackage{tikz}
+\usepackage[T1]{fontenc}
+\usepackage{newunicodechar}
+\usepackage{listings}
+\usepackage{comment}
+\usepackage{amsmath}
+\usepackage[]{graphicx}
+\usepackage{subfig}
+\usepackage{marvosym}
+\usepackage{hyperref}
+\usepackage{minted}
+\usetikzlibrary{positioning}
+\usetheme{ulisse}
+\usepackage{listings}
+\usepackage{xcolor}
+
+
+\definecolor{red2}{HTML}{ED4F4F}
+
+% redefinition of \texttt
+\let\Oldtexttt\texttt
+\renewcommand\texttt[1]{{\ttfamily\color{red2}#1}}
+\makeatother
+\lstset{ 
+    % language=Cy, % choose the language of the code
+    basicstyle=\fontfamily{pcr}\selectfont\footnotesize\color{white},
+    keywordstyle=\color{black}\bfseries, % style for keywords
+    numbers=none, % where to put the line-numbers
+    numberstyle=\tiny, % the size of the fonts that are used for the line-numbers     
+    backgroundcolor=\color{black},
+    showspaces=false, % show spaces adding particular underscores
+    showstringspaces=false, % underline spaces within strings
+    showtabs=false, % show tabs within strings adding particular underscores
+    frame=single, % adds a frame around the code
+    tabsize=2, % sets default tabsize to 2 spaces
+    rulesepcolor=\color{gray},
+    rulecolor=\color{black},
+    captionpos=b, % sets the caption-position to bottom
+    breaklines=true, % sets automatic line breaking
+    breakatwhitespace=false, 
+}
+
+
+\usepackage{hyperref} % link color
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    urlcolor=red2,
+}
+
+\title{Network Security -- Laboratorio}
+\author{Karina Chichifoi (@TryKatChup)}
+\date{\today}
+
+\begin{document}
+ 	\maketitle
+
+	% Intro
+	\begin{frame}
+		\frametitle{Monitoraggio della rete}
+		Per rilevare gli attacchi che arrivano alla nostra rete si guarda il traffico in ingresso e in uscita. Occorre quindi un sistema che:
+		\begin{itemize}
+		    \item esamini tutto il traffico senza rallentarlo
+		    \item generi pochissimi falsi allarmi (quindi pochi falsi positivi)
+		    \item non lasci sfuggire attacchi reali (falsi negativi nulli)
+		\end{itemize}
+	\end{frame}
+
+	\begin{frame}
+		\frametitle{IDS e IPS}
+	    \begin{itemize}
+	        \item IDS (Intrusion Detection System): rilevano attività inappropriate, errate o anomale in una rete e le segnalano.
+	        \item IPS (Intrusion Protection System): è una componente hardware o software il cui scopo è quello di prevenire tentativi di attacco per gli host che fanno parte della rete.
+	    \end{itemize}
+	    Ad esempio un IPS può effettuare il drop dei pacchetti, il reset di una sessione o bloccare e blacklistare un host che sta eseguendo un attacco alla rete.
+	\end{frame} 
+    
+    \begin{frame}
+        \frametitle{NIDS VS HIDS}
+        Esistono due tipologie di IDS:
+        \begin{itemize}
+            \item NIDS (Network Intrusion Detection System): i sistemi esaminano il traffico nella rete e monitorano più host per identificare le intrusioni;
+            \item HIDS (Host Intrusion Detection System): analizzano i dati e le attività di un singolo host, come ad esempio i registri di sistema, i log, modifiche al file system e così via.
+        \end{itemize}
+    \end{frame}
+    
+    
+	\begin{frame}
+		\frametitle{NIDS}
+        La rilevazione di attacchi che giungono via rete viene svolta analizzando il traffico in entrata/uscita.
+        Problema essenziale:
+        \begin{itemize}
+            \item esaminare tutto il traffico senza rallentarlo
+            \item generando pochissimi falsi allarmi
+            \item senza lasciar sfuggire attacchi reali
+        \end{itemize}
+        
+        Due approcci:
+        \begin{itemize}
+            \item Signature based: rileva flussi con caratteristiche notoriamente
+        malevole
+            \item Anomaly based: rileva flussi che si discostano dalla “normalità”
+        \end{itemize}
+        
+        Tra i NIDS più diffusi abbiamo
+        \begin{itemize}
+            \item Snort
+            \item Suricata
+            \item Bro
+        \end{itemize}
+	\end{frame}
+	
+	\begin{frame}
+        \frametitle{Suricata}
+        \begin{tikzpicture}[overlay,remember picture]
+            \node[anchor=south east,xshift=-30pt,yshift=40pt]
+              at (current page.south east) {
+                \includegraphics[width=0.45\linewidth]{img/suricata.png}
+              };
+        \end{tikzpicture}%
+        \begin{itemize}
+            \item Software open source creato da\\OISF nel 2009, fork di Snort.
+            \item Si può definire come IDPS,\\agisce sia da IDS che da IPS.
+            \item Multipiattaforma.
+        \end{itemize}
+        
+    \end{frame}
+	\begin{frame}
+    	\frametitle{Funzionalità extra di Suricata}
+        \begin{itemize}
+            \item Supporto al multithreading
+            \item Uso di accelerazione grafica per l'analisi tramite tecnologia nVidia CUDA
+            \item Trigger di script in linguaggio LUA
+        \end{itemize}
+      
+    \end{frame}
+ 
+    \begin{frame}
+    	\frametitle{Installazione e configurazione}
+		Installazione: seguire i passi del \href{https://suricata.readthedocs.io/en/suricata-6.0.4/quickstart.html\#installation}{sito della doc di Suricata}
+        \\
+        L'anno scorso avevamo una VM con Suricata con sopra Ubuntu.
+        \\
+        Lo script di installazione è presente \href{https://git.fuo.fi/fuomag9/docker-stuff-ipv6-ad/-/blob/main/scripts/install_suricata.sh}{qua}
+    \end{frame}
+    
+    \begin{frame}
+        \frametitle{Suricata.yaml}
+        Nel file \texttt{suricata.yaml} vengono definiti vari parametri di funzionamento per il software e i percorsi di sistema per caricare le regole o salvare i file di log, oltre che per specificare determinati comportamenti.
+        
+        Solitamente si trova in \texttt{/etc/suricata/suricata.yaml}
+
+    \end{frame}
+
+    \begin{frame}[fragile]
+        \frametitle{Campi importanti: pid-file}
+        \texttt{pid-file}, se decommentata, definisce un percorso di default per il file
+        contenente il pid di Suricata, utilizzato in assenza del comando \texttt{-{}-}\texttt{pidfile <file>}
+        \vskip 0.3cm
+        \begin{lstlisting}
+# Default pid file.
+# Will use this file if no --pidfile in command options.
+# pid-file: /var/run/suricata.pid
+        \end{lstlisting}
+    \end{frame}
+    
+    \begin{frame}[fragile]
+        \frametitle{Campi importanti: default log dir}
+        \texttt{default-log-dir} specifica in quale directory Suricata andrà a scrivere i propri file di log.
+        \vskip 0.3cm
+        \begin{lstlisting}
+default-log-dir: /var/log/suricata/
+        \end{lstlisting}
+    \end{frame}
+    
+    \begin{frame}[fragile]
+        \frametitle{Campi importanti: default-rule-path}
+        \texttt{default-rule-path} indica il percorso predefinito dove Suricata si aspetta di trovare i file \texttt{.rules}
+        \vskip 0.3cm
+        \begin{lstlisting}
+# Set the default rule path here to search for the files.
+# if not set, it will look at the current working dir
+default-rule-path: /etc/suricata/rules
+    \end{lstlisting}
+    \end{frame}
+    
+    \begin{frame}[fragile]
+        \frametitle{Campi importanti: rule-files}
+        \texttt{rule-files} precede la lista di tutti i file di regole che Suricata caricherà all'avvio. I file qui indicati devono essere presenti nella directory specificata da \texttt{default-rule-path}. Qualora si volessero caricare regole esterne alla directory di default è possibile utilizzare il parametro \texttt{-s} quando si digita il comando Suricata.
+        \vskip 0.3cm
+        \begin{lstlisting}
+[...]
+- emerging-trojan.rules
+- emerging-user_agents.rules
+# - emerging-virus.rules
+- emerging-voip.rules
+- emerging-web_client.rules
+- emerging-web_server.rules
+[...]
+        \end{lstlisting}
+    \end{frame}
+    \begin{frame}[fragile]
+        \frametitle{Campi importanti: copy-mode}
+    Consente di utilizzare Suricata come IPS.
+    \vskip 0.3cm
+    \begin{lstlisting}
+netmap:
+  - interface: wg-vulnbox
+    copy-mode: ips
+    \end{lstlisting}
+    \end{frame}
+    
+    \begin{frame}
+        \frametitle{Rules}
+        Le rules sono delle istruzioni fornite all'IDPS che definiscono come il sistema debba comportarsi al presentarsi di determinati pacchetti o situazioni. Più regole inerenti un determinato argomento di sicurezza
+        vengono raccolte all'interno di file con estensione \texttt{.rules}.
+    \end{frame}
+    
+    \begin{frame}[fragile]
+        \frametitle{Struttura delle regole}
+        Le regole Suricata sono divise in tre parti:
+        \begin{itemize}
+            \item \textbf{Azione}: è l'azione che Suricata deve intraprendere al verificarsi delle condizioni definite a seguire nella regola.
+            \item \textbf{Intestazione}: definisce il dominio di azione della regola, rendendone possibile l'innesco (trigger) solo quando un pacchetto cade all'interno di tale dominio.
+            \item \textbf{Opzioni}: parole chiave che permettono di specificare ulteriormente il comportamento di una regola (ad esempio \texttt{msg}, \texttt{content}). 
+        \end{itemize}
+        \begin{lstlisting}
+# Block OR 1=1
+alert http any any -> any 8080 (msg:"OR 1=1 pcre"; content: "OR 1=1"; http_uri; nocase; sid: 100014; rev: 1;)
+        \end{lstlisting}
+    \end{frame}
+    
+    \begin{frame}
+        \frametitle{Azioni}
+        In caso di match con le regole
+        \begin{itemize}
+            \item \texttt{pass}: Suricata smette di esaminare il pacchetto e lo lascia passare.
+            \item \texttt{alert}: il pacchetto viene lasciato passare, ma genererà un alert sotto forma di log. È l'azione più comune intrapresa nell'intrusion detection.
+            \item \texttt{drop}: se Suricata agisce come IPS (modalità in-line)
+            effettua il drop del pacchetto evitando che proceda oltre.
+            Suricata genererà poi un alert per il pacchetto.
+            \item \texttt{reject}: verrà inviato sia al destinatario che al mittente un pacchetto di reject (\texttt{reset-packet} per TCP, \texttt{ICMP-error} per altri protocolli). Se Suricata è disposto in modalità in-line, procederà al drop del pacchetto. Verrà generato un alert per il pacchetto.
+        \end{itemize}
+    \end{frame}
+    
+    \begin{frame}
+    \frametitle{Intestazione}
+    \begin{itemize}
+        \item \textbf{Protocollo}: protocollo affinché la regola venga applicata (tcp, icmp, ip, http).
+        \item \textbf{Sorgente e Destinazione}: Sono due coppie composte da Indirizzo IP di un host o di una rete e da una porta. Si possono usare:
+        \begin{itemize}
+            \item notazione CIDR
+            \item parole chiave come \texttt{any}
+            \item \texttt{\$HOME\_NET} e \texttt{\$EXTERNAL\_NET} definite in
+            \texttt{suricata.yaml}.
+        \end{itemize}
+        \item \textbf{Direzione}: 
+        \begin{itemize}
+            \item \texttt{->}: \texttt{<IP, porta>} a sinistra funge da sorgente, mentre a destra si ha il destinatario
+            \item \texttt{<-}: il contrario di \texttt{->}
+            \item \texttt{<>}: entrambe le direzioni
+        \end{itemize}
+    \end{itemize}
+    \end{frame}
+    
+    \begin{frame}[fragile]
+        \frametitle{Regole di esempio}
+        Con questi comandi Suricata carica delle regole pronte all'uso da enti che si occupano di sicurezza.
+        \vskip 0.3cm
+        \begin{lstlisting}
+sudo suricata-update
+sudo suricata-update list-sources
+sudo suricata-update enable-source tgreen/hunting
+        \end{lstlisting}
+        \vskip 0.3cm
+        \begin{lstlisting}
+Name: et/open
+  Vendor: Proofpoint
+  Summary: Emerging Threats Open Ruleset
+  License: MIT
+Name: oisf/trafficid
+  Vendor: OISF
+  Summary: Suricata Traffic ID ruleset
+  License: MIT
+        \end{lstlisting}
+    \end{frame}
+    
+    \begin{frame}
+      \frametitle{Log Suricata}%
+        Di default, Suricata, salva i propri output e alert su file di log. I vari log sono presenti nella cartella specificata nella variabile \texttt{default-log-dir} nel file \texttt{suricata.yaml}. 
+        \vskip 0.3cm
+        Su Windows genericamente viene usata la cartella \texttt{log} all'interno
+        della cartella di installazione di Suricata. Su Linux viene spesso utilizzata la directory \texttt{/var/log/suricata}.
+        \vskip 0.3cm
+        Sotto la voce \texttt{outputs} del file di configurazione sono elencati i vari tipi di log che Suricata può salvare.
+    \end{frame}
+    
+    \begin{frame}[fragile]
+      \frametitle{Tipi di log: fast-log}%
+        Sono log mono-riga, prodotto degli alert generati dalle regole di Suricata. È possibile scegliere se abilitare o meno questo tipo di log e se scrivere o meno in append al file. Questo genere di log si presentano con una specifica formattazione e contengono al loro interno quello che nelle regole è specificato dalla parola chiave \texttt{msg}.
+        \vskip 0.3cm
+        \begin{lstlisting}
+12/03/2012-04:05:45.999712  [**] [1:1:1] Suricata! [**]
+[Classification: Not Suspicious Traffic] [Priority: 3] {TCP}
+192.168.1.2:58236 -> 91.198.174.224:80
+        \end{lstlisting}
+    \end{frame}
+    
+    \begin{frame}[fragile]
+      \frametitle{Tipi di log: http-log}%
+        Si tratta del file di log che registra le informazioni riguardo al traffico HTTP di passaggio attraverso il sensore. È possibile specificare il formato del log, se scrivere in append, e se abilitarlo o meno.
+        \vskip 0.3cm
+        \begin{lstlisting}
+1/07/2012-01:55:30.337469 www.google.com [**]
+/logos/Logo_25wht.gif [**] Mozilla/5.0 (X11; Ubuntu;
+Linux x86_64; rv:16.0) Gecko/20100101 Firefox/16.0
+[**] 90.147.13.136:46933 -> 173.194.35.177:80
+64
+        \end{lstlisting}
+    \end{frame}
+	\startlayoutpage
+	\begin{frame}
+		\begin{center}
+			\Huge Domande?
+		\end{center}
+	\end{frame}
+	\stoplayoutpage
+\end{document}

@@ -1,0 +1,28 @@
+\mode<presentation>
+
+\pgfdeclarelayer{bg}    % declare background layer
+\pgfsetlayers{bg,main}  % set the order of the layers (main is the standard layer)
+
+\setbeamertemplate{background}{
+	\ifnum\thepage<2\relax%
+		\begin{tikzpicture}
+			\useasboundingbox (1,-1) rectangle(\the\paperwidth,130);
+			\begin{pgfonlayer}{bg}    % select the background layer
+				\fill[color=white] (0,0) rectangle (120,130);
+			\end{pgfonlayer}
+		\end{tikzpicture}
+	\fi
+}
+
+% Title page
+\defbeamertemplate*{title page}{ulisse}[1][]
+{
+	\begin{center}
+		\includegraphics[scale=.20]{logo_only}\\
+		{\color{black}\textsf{\Huge\inserttitle}}\\
+		{\color{black}\textsf{\small\insertauthor}}\\
+		{\color{black}\textsf{\small\insertdate}}
+	\end{center}
+}
+
+\mode<all>
